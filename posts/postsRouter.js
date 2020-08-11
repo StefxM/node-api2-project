@@ -58,12 +58,44 @@ router.get('/api/posts/:id', (req,res) => {
     })
 })
 
-//
+//all good
 router.get('/api/posts/:id/comments', (req,res) => {
-    db.findPostComments()
+    db.findPostComments(req.params.id)
+    .then((comments) =>{
+        if (comments) {
+            res.json(comments)
+        } else {
+            res.status(404).json({
+                message: "The post with the specified ID does not exist"
+            })
+        }
+    }).catch((error)=> {
+        console.log(error)
+        res.status(500).json({
+            message: "The comments information could not be retrieved."
+        })
+    })
 })
-
-
+//"kind of works"
+router.delete("/api/posts/:id", (req,res) => {
+    db.remove(req.params.id)
+    .then((posts) => {
+        if (posts > 0) {
+            res.status(200).json({
+                message: `Id:${req.params.id} was deleted`
+            })
+        } else {
+            res.status(404).json({
+                message: "The post with the specified ID does not exist"
+            })
+        }
+    }).catch((error) => {
+        console.log(error)
+        res.status(500).json({
+            message: "The post could not be removed"
+        })
+    })
+})
 
 
 
