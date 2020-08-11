@@ -25,7 +25,7 @@ router.post('/api/posts', (req,res) => {
         })
     })
 })
-
+//all good
 router.post("/api/posts/:id/comments", (req,res) => {
     
     if (!req.body.text) {
@@ -34,9 +34,9 @@ router.post("/api/posts/:id/comments", (req,res) => {
 
         })
     }
-    db.insertComment(req.params.id, req.body)
+    db.insertComment(req.body)
         .then((comment) => {
-            res.status(201).res.json(comment)
+            res.status(201).json(comment)
         })
         .catch((error) => {
             console.log(error)
