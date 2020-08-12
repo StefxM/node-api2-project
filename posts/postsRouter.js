@@ -101,13 +101,12 @@ router.get('/api/posts/:id/comments', (req,res) => {
 })
 //"kind of works"
 router.delete("/api/posts/:id", (req,res) => {
-    
-    db.remove(req.params.id, req.body)
+    const deletedPost = db.findById(req.params.id)
+    db.remove(req.params.id)
     .then((posts) => {
         if (posts > 0) {
-            res.status(200).json({
-                message: `Id:${req.params.id} ${req.body} was deleted`
-            })
+            
+            res.status(200).json(deletedPost.post)
         } else {
             res.status(404).json({
                 message: "The post with the specified ID does not exist"
